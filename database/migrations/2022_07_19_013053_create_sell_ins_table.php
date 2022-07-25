@@ -50,7 +50,7 @@ class CreateSellInsTable extends Migration
             $table->Integer('produk_kode')->nullable();
             $table->String('produk_name');
             $table->Integer('qty');
-            $table->Integer('rate/unit');
+            $table->Integer('rate_unit');
             $table->String('operator_id');
             $table->String('operator_name');
             $table->timestamps();

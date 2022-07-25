@@ -62,7 +62,7 @@ class SellinImport implements ToModel, WithStartRow, WithCustomCsvSettings
             'produk_kode'               => $row[31],
             'produk_name'               => $row[32],
             'qty'                       => $row[33],
-            'rate/unit'                 => $row[34],
+            'rate_unit'                 => $row[34],
             'operator_id'               => $row[35],
             'operator_name'             => $row[36],
             // 'created_at'                => $row[36],

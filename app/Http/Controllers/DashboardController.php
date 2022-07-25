@@ -45,9 +45,10 @@ class DashboardController extends Controller
 
     public function detail_item($id)
     {
-            // $data_sellin = Sellin::find($id);
+            $data_sellin = Sellin::find($id);
+            $empty = "- Data Tidak Tersedia -";
             // dd($data_sellin);
-            return view('menu.detail_item');
+            return view('menu.detail_item',compact('data_sellin','empty'));
     }
 
 
