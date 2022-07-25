@@ -11,7 +11,7 @@
             </ul>
             <!-- Right navbar links -->
             <ul class="navbar-nav ml-auto">
-                  <a class="nav-link" href="#">
+                  <a class="nav-link" href="{{route('logout')}}">
                   <i class="fas fa-sign-out-alt" ></i>
                   <form id="logout-form" action="#" method="POST" class="d-none">
                       @csrf

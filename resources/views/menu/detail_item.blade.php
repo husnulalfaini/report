@@ -29,11 +29,11 @@
                             <strong>Distributor Type: {{$data_sellin->distributor_type?:$empty}}</strong><br>
                             <b>Transaction ID :</b> {{$data_sellin->transaction_id?:$empty}}<br>
                             <b>Reference Order Number :</b> {{$data_sellin->reference_order_number?:$empty}}<br>
-                            <b>Created By:</b> {{$data_sellin->distributor_type?:$empty}}<br>
-                            <b>Created By Desc:</b> {{$data_sellin->crtd_by?:$empty}}<br>
-                            <b>Organization ID:</b> {{$data_sellin->crtd_by_desc?:$empty}}<br>
+                            <b>Created By:</b> {{$data_sellin->crtd_by?:$empty}}<br>
+                            <b>Created By Desc:</b> {{$data_sellin->ctrd_by_desc?:$empty}}<br>
+                            <b>Organization ID:</b>{{$data_sellin->organization_id?:$empty}}<br>
                             <br>
-                            <b>Saldomobo ID:</b>{{$data_sellin->organization_id?:$empty}}<br>
+                            <b>Saldomobo ID:</b>{{$data_sellin->saldomobo_id?:$empty}}<br>
                             <b>Nama Organisai :</b> {{$data_sellin->nama_organisasi?:$empty}}<br>
                             <b>Outlet Type:</b> {{$data_sellin->outlet_type?:$empty}}<br>
                             <b>Dari Node:</b> {{$data_sellin->dari_node?:$empty}}<br>
