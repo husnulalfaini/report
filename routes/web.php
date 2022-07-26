@@ -27,19 +27,25 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/halaman_register', [LoginController::class, 'tampilRegister'])->name('halaman.register');
 Route::post('/register_user', [LoginController::class, 'regis'])->name('register_user');
 
-// Route Menu User
 // Route::get('/', [DashboardController::class, 'index'])->name('index');
 Route::group(['middleware' => ['auth','CekRole:user']], function () {
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/sell_in', [DashboardController::class, 'sell_in'])->name('sell_in');
     Route::get('/sell_in/{item}', [DashboardController::class, 'detail'])->name('detail.sell_in');
     Route::get('/sell_in/detail/{item}', [DashboardController::class, 'detail_item'])->name('detail.item.sell_in');
     Route::get('/upload', [DashboardController::class, 'upload'])->name('upload');
     Route::post('/uploadFile', [DashboardController::class, 'uploadFile'])->name('upload.file');
+    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
+    Route::post('/profile/{item}', [DashboardController::class, 'profile_update'])->name('update.profile');
 });
 Auth::routes();
 
 Route::group(['middleware' => ['auth','CekRole:admin']], function () {
     Route::get('/halaman_tambah', [AdminController::class, 'halaman_tambah'])->name('halaman.tambah');
     Route::post('/tambah_user', [AdminController::class, 'tambah_user'])->name('tambah.user');
+    Route::get('/all_user', [AdminController::class, 'all_user'])->name('all.user');
+    Route::get('/edit_user/{id}', [AdminController::class, 'edit_user'])->name('edit.user');
+    Route::post('/update_user/{id}', [AdminController::class, 'update_user'])->name('update.user');
+
 });
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

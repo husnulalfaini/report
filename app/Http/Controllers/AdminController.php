@@ -3,6 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User;
+use Auth;
+use Validator;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -12,8 +17,74 @@ class AdminController extends Controller
     }
 
 
-    public function tambah_user(Type $var = null)
+    public function tambah_user(Request $request)
     {
-        return view('admin.halaman_tambah');
+        // melalukan validasi
+    $validator = Validator::make($request->all(), [
+        'email'     =>'unique:users',
+    ]);
+
+    //pengondisian error
+    if ($validator->fails()) {
+        return redirect('/halaman_tambah')->with('error', 'admin sudah ada, masukan pengguna lain!');               
     }
+    
+    // input data baru kedalam tabel user
+    $input = new User();
+    $input['name']              = $request->name;
+    $input['email']             = $request->email;
+    $input['password']          = Hash::make($request->password);
+    $input['role']              = $request->role;
+    $input['remember_token']    = Str::random(60);
+
+    // dd($input);
+    $input->save();
+
+        return redirect('/halaman_tambah');
+    }
+
+    public function all_user(Type $var = null)
+    {
+        $team = User::all();
+        return view('admin.all_user',compact('team'));
+    }
+
+
+
+    public function edit_user($id)
+    {
+        $user = User::find($id);
+        return view('admin.edit_user',compact('user'));
+    }
+
+
+
+    public function update_user(Request $request, $id)
+    {
+        // validase inputan
+        $request->validate([
+            'name'=>'required',
+            'email'=> 'required',
+            'password'=> 'required',
+        ]);
+
+        
+        $admin=User::find($id);
+            
+            // input data update user yang baru
+            $admin->name            = $request->name;
+            $admin->email           = $request->email;
+            $admin->password        = Hash::make($request->password);
+            $admin->remember_token  = Str::random(60);
+            $admin->save();
+            
+
+            return redirect('/all_user');
+            // return redirect()->route('edit.user')->with('success','Data Admin Berhasil di Update');
+
+            
+    }
+
+
+
 }

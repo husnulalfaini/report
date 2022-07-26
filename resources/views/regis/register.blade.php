@@ -25,16 +25,10 @@
                         <div class="login-wrap p-4 p-md-5">
                             <div class="d-flex">
                                 <div class="w-100">
-                                    <h3 class="mb-4">Sign In</h3>
+                                    <h3 class="mb-4">Register</h3>
                                 </div>
                                 <div class="w-100">
                                     <p class="social-media d-flex justify-content-end">
-                                        <a href="#"
-                                            class="social-icon d-flex align-items-center justify-content-center"><span
-                                                class="fa fa-facebook"></span></a>
-                                        <a href="#"
-                                            class="social-icon d-flex align-items-center justify-content-center"><span
-                                                class="fa fa-twitter"></span></a>
                                     </p>
                                 </div>
                             </div>
@@ -53,11 +47,6 @@
                                 <div class="form-group mb-3">
                                     <label class="label" for="password">Password</label>
                                     <input type="password" name="password" class="form-control" placeholder="Password"
-                                        required>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <label class="label" for="password">Role</label>
-                                    <input type="text" name="role" class="form-control" placeholder="Role"
                                         required>
                                 </div>
                                 <div class="form-group">

@@ -15,7 +15,7 @@
             </div>
             <div class="info">
                 @if(auth()->user()->role=="user")
-                <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+                <a href="{{url('/profile')}}" class="d-block">{{ Auth::user()->name }}</a>
                 @else <a href="#" class="d-block">{{ Auth::user()->name }}</a>
                 @endif
             </div>
@@ -25,11 +25,23 @@
                 @if(auth()->user()->role=="admin")
                 <li class="nav-item">
                     <a href="{{url('/halaman_tambah')}}" class="nav-link">
-                        <i class="nav-icon fas fa-list"></i>
+                        <i class="nav-icon fas fa-plus"></i>
                         <p> Tambah User </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{url('/all_user')}}" class="nav-link">
+                        <i class="nav-icon fas fa-users"></i>
+                        <p> Pengguna </p>
+                    </a>
+                </li>
                 @else
+                <li class="nav-item">
+                    <a href="{{url('/dashboard')}}" class="nav-link">
+                        <i class="nav-icon fas fa-home"></i>
+                        <p> Dashboard </p>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a href="{{url('/sell_in')}}" class="nav-link">
                         <i class="nav-icon fas fa-list"></i>

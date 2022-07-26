@@ -19,7 +19,7 @@ class LoginController extends Controller
     public function login(Request $request)
     {   
         // if(Auth::attempt($request->only('email','password')))
-        if($auth=Auth::attempt($request->only('email','password')))
+        if(Auth::attempt($request->only('email','password')))
         {
             if (auth()->user()->role=="user") {
                 return view('menu.upload');
@@ -27,7 +27,7 @@ class LoginController extends Controller
                 return view('admin.halaman_tambah');
             }  
         }
-        dd($auth);
+        // dd($auth);
             return redirect('/')->with('error', 'Email atau Password Anda Salah!!');
 
     }
@@ -60,7 +60,7 @@ class LoginController extends Controller
     $input['name']              = $request->name;
     $input['email']             = $request->email;
     $input['password']          = Hash::make($request->password);
-    $input['role']              = $request->role;
+    $input['role']              = "user";
     $input['remember_token']    = Str::random(60);
 
     // dd($input);
