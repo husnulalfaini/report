@@ -15,17 +15,52 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function index(Type $var = null)
+    public function index(Request $request)
     {
-        $data = Sellin::select ('initiator_cluster',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
-        ->GroupBy ('initiator_cluster')
+        $data = Sellin::select ('dest_region',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+        ->GroupBy ('dest_region')
         ->get();
+       
+        // if($request->tahun==0)
+        // $tahun = Date('Y');
+        // $tahun = $request->tahun;
         return view('menu.dashboard',compact('data'));
     }
+
+    public function filter(Request $request){
+        if($request->select=="area"){
+            $data = Sellin::select ('dest_area',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+            ->GroupBy ('dest_area')
+            ->get();
+
+        }elseif ($request->select=="sales_area") {
+            $data = Sellin::select ('dest_sales_area',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+            ->GroupBy ('dest_sales_area')
+            ->get();
+
+        }elseif ($request->select=="cluster") {
+            $data = Sellin::select ('dest_cluster',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+            ->GroupBy ('dest_cluster')
+            ->get();
+
+        }elseif ($request->select=="micro_cluster") {
+            $data = Sellin::select ('dest_micro_cluster',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+            ->GroupBy ('dest_micro_cluster')
+            ->get();
+
+        } else{
+            $data = Sellin::select ('dest_region',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+        ->GroupBy ('dest_region')
+        ->get();
+        }
+        // dd($request);
+        return $data;
+    }
+
     public function sell_in()
     {
-        $data = Sellin::select ('transaction_datetimes','dest_saldomobo_id', 'dest_cluster', 'produk_name',DB::raw('SUM(qty) as qty'))
-        ->GroupBy ('transaction_datetimes','dest_saldomobo_id','produk_name','dest_cluster')
+        $data = Sellin::select ('created_at','dest_saldomobo_id', 'dest_cluster', 'produk_name',DB::raw('SUM(qty) as qty'))
+        ->GroupBy ('created_at','dest_saldomobo_id','produk_name','dest_cluster')
         ->get();
        
         return view('menu.sell_in', compact('data'));

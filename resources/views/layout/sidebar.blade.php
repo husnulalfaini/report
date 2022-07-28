@@ -36,26 +36,35 @@
                     </a>
                 </li>
                 @else
-                <li class="nav-item">
-                    <a href="{{url('/dashboard')}}" class="nav-link">
-                        <i class="nav-icon fas fa-home"></i>
-                        <p> Dashboard </p>
+                <li class="nav-item   menu-is-opening menu-open">
+                    <a class="nav-link">
+                        <i class="nav-icon fas fa-book"></i>
+                        <p>
+                            SEll IN
+                            <i class="right fas fa-angle-left"></i>
+                        </p>
                     </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{url('/sell_in')}}" class="nav-link">
-                        <i class="nav-icon fas fa-list"></i>
-                        <p> Report Sell </p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{url('/upload')}}" class="nav-link">
-                        <i class="nav-icon fas fa-upload"></i>
-                        <p> Upload File </p>
-                    </a>
-                </li>
-                @endif
-            </ul>
+                    <ul class="nav nav-treeview" style="display: block;">
+                        <li class="nav-item">
+                            <a href="{{url('/dashboard')}}" class="nav-link">
+                                <i class="nav-icon fas fa-home"></i>
+                                <p> Dashboard </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/sell_in')}}" class="nav-link">
+                                <i class="nav-icon fas fa-list"></i>
+                                <p> Report Sell </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{url('/upload')}}" class="nav-link">
+                                <i class="nav-icon fas fa-upload"></i>
+                                <p> Upload File </p>
+                            </a>
+                        </li>
+                        @endif
+                    </ul>
         </nav>
         <!-- /.sidebar-menu -->
     </div>

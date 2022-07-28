@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth','CekRole:user']], function () {
     Route::post('/uploadFile', [DashboardController::class, 'uploadFile'])->name('upload.file');
     Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
     Route::post('/profile/{item}', [DashboardController::class, 'profile_update'])->name('update.profile');
+    Route::get('/filter', [DashboardController::class, 'filter'])->name('filter');
 });
 Auth::routes();
 
