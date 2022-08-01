@@ -10,16 +10,13 @@
             <div class="callout callout-warning col-4 mr-5">
                 <div class="col-12">
                     <form action="{{route('filter')}}" method="get">
-                        <select class="form-control text-darker pl-2" name="select">
+                        <select class="form-control text-darker pl-2" id="select" name="select">
                             <option value="" disabled selected>Select REGION</option>
                             <option value="area">AREA</option>
                             <option value="sales_area">SALES AREA</option>
                             <option value="cluster">CLUSTER</option>
                             <option value="micro_cluster">MICRO CLUSTER</option>
                         </select>
-                        <div class="col-xl-1 pt-2">
-                            <button type="submit" class="btn btn-primary">Filter </button>
-                        </div>
                     </form>
                 </div>
             </div>
@@ -35,9 +32,6 @@
                                 placeholder="Max" required />
                         </div>
                     </div>
-                    <div class="col-xl-1 pt-2">
-                            <button type="submit" class="btn btn-primary">Filter </button>
-                        </div>
                 </div>
             </div>
 
@@ -79,11 +73,11 @@
                         <th id="thboard">%Ach</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="sell_in">
                     @foreach($data as $item)
                     <tr id="trboard">
-                        <td id="tdboard">{{Str::limit($item->transaction_datetimes, 11)}}</td>
-                        <td id="tdboard1">{{$item->dest_region}}</td>
+                        <td id="tdboard">{{$item->transaction_datetimes}}</td>
+                        <td id="tdboard1" >{{$item->dest_region}}</td>
                         <td id="tdboard">{{$item->outlet}}</td>
                         <td id="tdboard">jumlah outlet</td>
                         <td id="tdboard">Hasil Ach</td>
@@ -173,15 +167,29 @@ $(document).ready(function() {
 </script>
 <script type="text/javascript">
         $(document).ready(function(){
-            $('#merks').on('change', function(e){
+            $('#select').on('change', function(e){
                 var id = e.target.value;
-                $.get('{{ url('merk')}}/'+id, function(data){
+                $.get('http://localhost/report/filter?select='+id, function(data){
                     console.log(id);
                     console.log(data);
-                    $('#motors').empty();
+                    $('#sell_in').empty();
                     $.each(data, function(index, element){
-                        $('#motors').append("<tr><td>"+element.id_motor+"</td><td>"+element.id_merk+"</td>"+
-                        "<td>"+element.nama_motor+"</td></tr>");
+                        console.log(element)
+                        if(id == 'area'){
+                            $('#sell_in').append("<tr><td>"+element.transaction_datetimes+"</td><td>"+element.dest_area+"</td><td>"+element.outlet+"</td></tr>");
+                        }
+                        else if(id == 'sales_area'){
+                            $('#sell_in').append("<tr><td>"+element.transaction_datetimes+"</td><td>"+element.dest_sales_area+"</td><td>"+element.outlet+"</td></tr>");
+                        }
+                        else if(id == 'cluster'){
+                            $('#sell_in').append("<tr><td>"+element.transaction_datetimes+"</td><td>"+element.dest_cluster+"</td><td>"+element.outlet+"</td></tr>");
+                        }
+                        else if(id == 'micro_cluster'){
+                            $('#sell_in').append("<tr><td>"+element.transaction_datetimes+"</td><td>"+element.dest_micro_cluster+"</td><td>"+element.outlet+"</td></tr>");
+                        }
+                        else{
+                            $('#sell_in').append("<tr><td>"+element.transaction_datetimes+"</td><td>"+element.region+"</td><td>"+element.outlet+"</td></tr>");
+                        }
                     });
                 });
             });

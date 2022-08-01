@@ -24,7 +24,7 @@
 <!-- summernote -->
 <link rel="stylesheet" href="{{asset('public/asset/plugins/summernote/summernote-bs4.min.css')}}">
 <!-- table dashboard CSS -->
-  <link rel="stylesheet" href="{{asset('public/css/dashboard1.css')}}">
+<link rel="stylesheet" href="{{asset('public/css/dashboard1.css')}}">
 
 <!-- DataTab-->
 <!-- <link rel="stylesheet" href="{{asset('public/asset/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
@@ -45,3 +45,4 @@
 <link rel="stylesheet" href="{{asset('public/asset/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
 <!-- Daterange picker -->
 <link rel="stylesheet" href="{{asset('public/asset/plugins/daterangepicker/daterangepicker.css')}}">
+

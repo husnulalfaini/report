@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Sellin;
+use App\Models\Outletpjp;
 use DB;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -17,10 +18,36 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $data = Sellin::select ('dest_region',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
-        ->GroupBy ('dest_region')
+        // $data = Sellin::select ('transaction_datetimes','dest_region',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+        // ->GroupBy ('dest_region','transaction_datetimes')
+        // ->get();
+
+        // $data = Sellin::select('sell_ins.transaction_datetimes as transaction_datetimes','sell_ins.dest_region as dest_region',DB::raw('SUM(sell_ins.dest_saldomobo_id) as outlet'))
+        // ->join('sell_ins','sell_ins.dest_organizationname','=','outletpjps.outlet_name')
+        // ->where('sell_ins.dest_organizationname','outletpjps.outlet_name')
+        // ->GroupBy ('sell_ins.dest_region','sell_ins.transaction_datetimes')
+        // ->get();
+        // $data = Outletpjp::all();
+        // $data = DB::table('sell_ins','outletpjps')
+        // ->select('sell_ins.transaction_datetimes as transaction_datetimes','sell_ins.dest_cluster as dest_cluster',DB::raw('COUNT(sell_ins.dest_saldomobo_id) as outlet'))
+        // ->join('sell_ins','sell_ins.dest_saldomobo_id','=','outletpjps.id_outlet')
+        // // ->where('sell_ins.dest_saldomobo_id','=','outletpjps.id_outlet')
+        // ->GroupBy ('sell_ins.dest_cluster','sell_ins.transaction_datetimes')
+        // ->get();
+        // dd($data);
+        $data = DB::table('sell_ins')
+        ->select('sell_ins.transaction_datetimes as transaction_datetimes','sell_ins.dest_cluster as dest_cluster',DB::raw('COUNT(sell_ins.dest_saldomobo_id) as outlet'))
+        ->join('outletpjps','outletpjps.id_outlet','=','sell_ins.dest_saldomobo_id')
+        // ->where('sell_ins.dest_saldomobo_id','=','outletpjps.id_outlet')
+        ->GroupBy ('sell_ins.dest_cluster','sell_ins.transaction_datetimes')
         ->get();
-       
+        dd($data);
+
+    //     DB::select(DB::raw(" 
+    // SELECT COUNT(*) AS result
+    // FROM some_table"
+// ));
+
         // if($request->tahun==0)
         // $tahun = Date('Y');
         // $tahun = $request->tahun;
@@ -29,28 +56,28 @@ class DashboardController extends Controller
 
     public function filter(Request $request){
         if($request->select=="area"){
-            $data = Sellin::select ('dest_area',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
-            ->GroupBy ('dest_area')
+            $data = Sellin::select ('transaction_datetimes','dest_area',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+            ->GroupBy ('transaction_datetimes','dest_area')
             ->get();
 
         }elseif ($request->select=="sales_area") {
-            $data = Sellin::select ('dest_sales_area',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
-            ->GroupBy ('dest_sales_area')
+            $data = Sellin::select ('transaction_datetimes','dest_sales_area',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+            ->GroupBy ('transaction_datetimes','dest_sales_area')
             ->get();
 
         }elseif ($request->select=="cluster") {
-            $data = Sellin::select ('dest_cluster',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
-            ->GroupBy ('dest_cluster')
+            $data = Sellin::select ('transaction_datetimes','dest_cluster',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+            ->GroupBy ('transaction_datetimes','dest_cluster')
             ->get();
 
         }elseif ($request->select=="micro_cluster") {
-            $data = Sellin::select ('dest_micro_cluster',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
-            ->GroupBy ('dest_micro_cluster')
+            $data = Sellin::select ('transaction_datetimes','dest_micro_cluster',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+            ->GroupBy ('transaction_datetimes','dest_micro_cluster')
             ->get();
 
         } else{
-            $data = Sellin::select ('dest_region',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
-        ->GroupBy ('dest_region')
+            $data = Sellin::select ('transaction_datetimes','dest_region',DB::raw('COUNT(dest_saldomobo_id) as outlet'))
+        ->GroupBy ('transaction_datetimes','dest_region')
         ->get();
         }
         // dd($request);
@@ -59,8 +86,8 @@ class DashboardController extends Controller
 
     public function sell_in()
     {
-        $data = Sellin::select ('created_at','dest_saldomobo_id', 'dest_cluster', 'produk_name',DB::raw('SUM(qty) as qty'))
-        ->GroupBy ('created_at','dest_saldomobo_id','produk_name','dest_cluster')
+        $data = Sellin::select ('transaction_datetimes','dest_saldomobo_id', 'dest_micro_cluster','dest_cluster', 'produk_name',DB::raw('SUM(qty) as qty'))
+        ->GroupBy ('transaction_datetimes','dest_saldomobo_id', 'dest_micro_cluster', 'dest_cluster', 'produk_name')
         ->get();
        
         return view('menu.sell_in', compact('data'));

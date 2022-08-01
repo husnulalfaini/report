@@ -131,3 +131,47 @@ $('#example').DataTable({
                                     <option value="{{$val->year}}" @if($val->year == $tahun)
                                         {{'selected="selected"'}} @endif >{{$val->year}}</option>
                                     @endforeach
+
+                                    <script>
+$(document).ready(function() {
+    $('#example').DataTable();
+});
+var minDate, maxDate;
+
+// Custom filtering function which will search data in column four between two values
+$.fn.dataTable.ext.search.push(
+    function(settings, data, dataIndex) {
+        var min = minDate.val();
+        var max = maxDate.val();
+        var date = new Date(data[0]);
+
+        if (
+            (min === null && max === null) ||
+            (min === null && date <= max) ||
+            (min <= date && max === null) ||
+            (min <= date && date <= max)
+        ) {
+            return true;
+        }
+        return false;
+    }
+);
+
+$(document).ready(function() {
+    // Create date inputs
+    minDate = new DateTime($('#min'), {
+        format: 'YYYY-MM-DD'
+    });
+    maxDate = new DateTime($('#max'), {
+        format: 'YYYY-MM-DD'
+    });
+
+    // DataTables initialisation
+    var table = $('#example').DataTable();
+
+    // Refilter the table
+    $('#min, #max').on('change', function() {
+        table.draw();
+    });
+});
+</script>

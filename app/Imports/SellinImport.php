@@ -6,6 +6,7 @@ use App\Models\Sellin;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
+use Carbon\Carbon;
 
 class SellinImport implements ToModel, WithStartRow, WithCustomCsvSettings
 {
@@ -28,7 +29,7 @@ class SellinImport implements ToModel, WithStartRow, WithCustomCsvSettings
     public function model(array $row)
     {
         return new Sellin([
-            'transaction_datetimes'     => $row[0],
+            'transaction_datetimes'     => Carbon::parse($row[0])->format('Y-m-d'),
             'transaction_id'            => $row[1],
             'reference_order_number'    => $row[2],
             'distributor_type'          => $row[3],
