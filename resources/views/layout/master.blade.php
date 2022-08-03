@@ -4,7 +4,6 @@
       @include('layout.top')
    </head>
    <body class="hold-transition sidebar-mini layout-fixed">
-   
       <div class="wrapper">
          <!-- Navbar -->
          @include('layout.header')

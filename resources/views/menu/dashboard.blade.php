@@ -176,7 +176,7 @@ $(document).ready(function() {
                     $.each(data, function(index, element){
                         console.log(element)
                         if(id == 'area'){
-                            $('#sell_in').append("<tr><td>"+element.transaction_datetimes+"</td><td>"+element.dest_area+"</td><td>"+element.outlet+"</td></tr>");
+                            $('#sell_in').append("<tr ><td>"+element.transaction_datetimes+"</td><td>"+element.dest_area+"</td><td>"+element.outlet+"</td></tr>");
                         }
                         else if(id == 'sales_area'){
                             $('#sell_in').append("<tr><td>"+element.transaction_datetimes+"</td><td>"+element.dest_sales_area+"</td><td>"+element.outlet+"</td></tr>");
