@@ -27,15 +27,15 @@
 <link rel="stylesheet" href="{{asset('public/css/dashboard1.css')}}">
 
 <!-- DataTab-->
-<!-- <link rel="stylesheet" href="{{asset('public/asset/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
+<link rel="stylesheet" href="{{asset('public/asset/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('public/asset/plugins/datatables-responsive/css/responsive.bootstrap4.min.css')}}">
 <link rel="stylesheet" href="{{asset('public/asset/plugins/datatables-buttons/css/buttons.bootstrap4.min.css')}}">
-<link rel="stylesheet" href="{{asset('public/asset/dist/css/adminlte.min.css')}}"> -->
+<link rel="stylesheet" href="{{asset('public/asset/dist/css/adminlte.min.css')}}">
 
 <!-- date picker -->
-<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+<!-- <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 <link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.1.2/css/dataTables.dateTime.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.2.3/css/buttons.dataTables.min.css"> -->
 
 <!--
 <link rel="stylesheet" href="{{asset('node_modules\air-datepicker\dist\css\datepicker.css')}}">
@@ -44,5 +44,15 @@
 <!-- overlayScrollbars -->
 <link rel="stylesheet" href="{{asset('public/asset/plugins/overlayScrollbars/css/OverlayScrollbars.min.css')}}">
 <!-- Daterange picker -->
-<link rel="stylesheet" href="{{asset('public/asset/plugins/daterangepicker/daterangepicker.css')}}">
+<!-- <link rel="stylesheet" href="{{asset('public/asset/plugins/daterangepicker/daterangepicker.css')}}"> -->
+
+<!-- Datatables CSS CDN -->
+<!-- <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css"> -->
+
+<!-- date range picker -->
+<!-- <link href="https://netdna.bootstrapcdn.com/bootstrap/2.3.2/css/bootstrap.min.css" rel="stylesheet"> -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.2.0/css/datepicker.min.css" rel="stylesheet">
+
+
+
 

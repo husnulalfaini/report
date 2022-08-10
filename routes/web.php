@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\SellInController;
+use App\Http\Controllers\ProfilUserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,7 +17,9 @@ use App\Http\Controllers\LoginController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Auth::routes([
+    'login' => false,
+]);
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -30,14 +34,22 @@ Route::post('/register_user', [LoginController::class, 'regis'])->name('register
 // Route::get('/', [DashboardController::class, 'index'])->name('index');
 Route::group(['middleware' => ['auth','CekRole:user']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/sell_in', [DashboardController::class, 'sell_in'])->name('sell_in');
-    Route::get('/sell_in/{item}', [DashboardController::class, 'detail'])->name('detail.sell_in');
-    Route::get('/sell_in/detail/{item}', [DashboardController::class, 'detail_item'])->name('detail.item.sell_in');
-    Route::get('/upload', [DashboardController::class, 'upload'])->name('upload');
-    Route::post('/uploadFile', [DashboardController::class, 'uploadFile'])->name('upload.file');
-    Route::get('/profile', [DashboardController::class, 'profile'])->name('profile');
-    Route::post('/profile/{item}', [DashboardController::class, 'profile_update'])->name('update.profile');
+    Route::get('/sell_in', [SellInController::class, 'sell_in'])->name('sell_in');
+    // Route::get('/getsell_in', [SellInController::class, 'getsell_in'])->name('getsell_in');
+    Route::get('/sell_in/{item}', [SellInController::class, 'detail'])->name('detail.sell_in');
+    Route::get('/sell_in/detail/{item}', [SellInController::class, 'detail_item'])->name('detail.item.sell_in');
+    Route::get('/upload', [SellInController::class, 'upload'])->name('upload');
+    Route::post('/uploadFile', [SellInController::class, 'uploadFile'])->name('upload.file');
+    Route::get('/download', [SellInController::class, 'download'])->name('download.file');
+    Route::get('/profile', [ProfilUserController::class, 'profile'])->name('profile');
+    Route::post('/profile/{item}', [ProfilUserController::class, 'profile_update'])->name('update.profile');
     Route::get('/filter', [DashboardController::class, 'filter'])->name('filter');
+    Route::get('/datadash', [DashboardController::class, 'datadash'])->name('datadash');
+    Route::get('/datasp0k', [DashboardController::class, 'datasp0k'])->name('datasp0k');
+    Route::get('/datasp3gb', [DashboardController::class, 'datasp3gb'])->name('datasp3gb');
+    Route::get('/datasp9gb', [DashboardController::class, 'datasp9gb'])->name('datasp9gb');
+    Route::get('/dataspreg', [DashboardController::class, 'dataspreg'])->name('dataspreg');
+    Route::get('/dataspori', [DashboardController::class, 'dataspori'])->name('dataspori');
 });
 Auth::routes();
 

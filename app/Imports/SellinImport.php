@@ -2,7 +2,7 @@
 
 namespace App\Imports;
 
-use App\Models\Sellin;
+use App\Models\SellIn;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithStartRow;
 use Maatwebsite\Excel\Concerns\WithCustomCsvSettings;
@@ -28,7 +28,7 @@ class SellinImport implements ToModel, WithStartRow, WithCustomCsvSettings
     */
     public function model(array $row)
     {
-        return new Sellin([
+        return new SellIn([
             'transaction_datetimes'     => Carbon::parse($row[0])->format('Y-m-d'),
             'transaction_id'            => $row[1],
             'reference_order_number'    => $row[2],

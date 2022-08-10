@@ -175,3 +175,185 @@ $(document).ready(function() {
     });
 });
 </script>
+
+
+@extends('layout.master')
+
+
+@section('content')
+
+<!-- Daftar Seluruh Kelompok -->
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="row">
+                </div>
+                <div class="card mt-5">
+                    <div class="card-header">
+                        <h3 class="card-title">Report Sell</h3>
+                    </div>
+                    <!-- /.card-header -->
+                    <div class="card-body">
+                        <table id="example" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <!-- <th>TANGGAL</th> -->
+                                    <th>TANGGAL</th>
+                                    <th>DEST SALDOMOBO ID</th>
+                                    <th>DEST MIKRO CLUSTER</th>
+                                    <th>DEST CLUSTER</th>
+                                    <th>PRODUK NAME</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>#transaction_datetimes</td>
+                                    <td>#dest_saldomobo_id</td>
+                                    <td>#dest_micro_cluster</td>
+                                    <td>#dest_cluster</td>
+                                    <td>#produk_name</td>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.col -->
+        </div>
+        <!-- /.row -->
+        <!-- /.container-fluid -->
+</section>
+<!-- END Daftar Seluruh Kelompok -->
+
+
+<!-- <script src="{{asset('public/asset/plugins/jquery/jquery.min.js')}}"></script> -->
+
+
+<!-- jQuery -->
+<!-- <script src="{{asset('public/asset/plugins/jquery/jquery.min.js')}}"></script> -->
+<!-- Bootstrap 4 -->
+<!-- <script src="{{asset('public/asset/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script> -->
+<!-- DataTables  & Plugins -->
+<!-- <script src="{{asset('public/asset/plugins/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/datatables-responsive/js/dataTables.responsive.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/datatables-responsive/js/responsive.bootstrap4.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/datatables-buttons/js/dataTables.buttons.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/datatables-buttons/js/buttons.bootstrap4.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/jszip/jszip.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/pdfmake/pdfmake.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/pdfmake/vfs_fonts.js')}}"></script>
+<script src="{{asset('public/asset/plugins/datatables-buttons/js/buttons.html5.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/datatables-buttons/js/buttons.print.min.js')}}"></script>
+<script src="{{asset('public/asset/plugins/datatables-buttons/js/buttons.colVis.min.js')}}"></script> -->
+
+<!-- jQuery CDN -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<!-- Datatables JS CDN -->
+<script type="text/javascript" src="https://cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
+<!-- 
+<script>
+$('#example').DataTable({
+    "paging": true,
+    "lengthChange": true,
+    "searching": true,
+    "ordering": true,
+    "info": true,
+    "autoWidth": true,
+    "responsive": true,
+    "buttons": ["csv", "excel", "pdf", "print"]
+}).buttons().container().appendTo('#example_wrapper .col-md-6:eq(0)');
+</script> -->
+
+<!-- Script -->
+<script type="text/javascript">
+    $(document).ready(function(){
+
+      // DataTable
+      $('#example').DataTable({
+         processing: true,
+         serverSide: true,
+         ajax: "{{route('getsell_in')}}",
+         columns: [
+            { data: 'transaction_datetimes' },
+            { data: 'dest_saldomobo_id' },
+            { data: 'dest_micro_cluster' },
+            { data: 'dest_cluster' },
+            { data: 'produk_name' },
+         ]
+      });
+
+    });
+    </script>
+@endsection
+
+<tbody id="sell_in">
+                    @foreach($data as $item)
+                    <tr id="trboard">
+                        
+                        <td id="tdboard">{{$item->tanggal}}</td>
+                        <td id="tdboard1" >{{$item->region}}</td>
+                        <td id="tdboard">{{$item->outlet}}</td>
+                        @endforeach
+
+                        @foreach($data_sp0k as $sp0k)
+                        <td id="tdboard">{{$sp0k->sp0k}}</td>
+                        <td id="tdboard">Hasil Ach</td>
+                        @endforeach
+                        @foreach($data_sp3gb as $sp3gb)
+                        <td id="tdboard">{{$sp3gb->sp3gb}}</td>
+                        <td id="tdboard">Hasil Ach</td>
+                        @endforeach
+
+                        @foreach($data_sp9gb as $sp9gb)
+                        <td id="tdboard">{{$sp9gb->sp9gb}}</td>
+                        <td id="tdboard">Hasil Ach</td>
+                        @endforeach
+
+                        @foreach($data_spori as $spori)
+                        <td id="tdboard">{{$spori->spori}}</td>
+                        @endforeach
+
+                        @foreach ($data_spreg as $spreg)
+                        <td id="tdboard">{{$spreg->spreg}}</td>
+                        @endforeach
+
+                        @foreach($data_spori as $spori)
+                        <td id="tdboard">{{$spori->spori}}</td>
+                        @endforeach
+
+                        @foreach ($data_spreg as $spreg)
+                        <td id="tdboard">{{$spreg->spreg}}</td>
+                        @endforeach
+
+                        <td id="tdboard">SP Reg</td>
+                        <td id="tdboard">SP Ori</td>
+                    </tr>
+                </tbody>
+
+
+<tbody id="sell_in">
+                    @foreach($data as $item)
+                    <tr id="trboard">
+                        
+                        <td id="tdboard">{{$item->tanggal}}</td>
+                        <td id="tdboard1" >{{$item->region}}</td>
+                        <td id="tdboard">{{$item->outlet}}</td>
+                        <td id="tdboard">coba</td>
+                        <td id="tdboard">Hasil Ach</td>
+                        <td id="tdboard">coba</td>
+                        <td id="tdboard">Hasil Ach</td>
+                        <td id="tdboard">coba</td>
+                        <td id="tdboard">Hasil Ach</td>
+                        <td id="tdboard">coba</td>
+                        <td id="tdboard">coba</td>
+                        <td id="tdboard">coba</td>
+                        <td id="tdboard">coba</td>
+                        <td id="tdboard">SP Reg</td>
+                        <td id="tdboard">SP Ori</td>
+                    </tr>
+                    @endforeach
+</tbody>
