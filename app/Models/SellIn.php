@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use EllGreen\LaravelLoadFile\Laravel\Traits\LoadsFiles;
 use Illuminate\Database\Eloquent\Model;
+
 
 class SellIn extends Model
 {
+    use LoadsFiles;
     use HasFactory;
 
     // protected $casts = [
@@ -19,6 +22,15 @@ class SellIn extends Model
 public function scopeSearch($query, $name)
 {
     return $query->where('name', 'LIKE', "%{$name}%");
+}
+
+
+
+public function loadFileOptions(Builder $builder): void
+{
+    $builder
+        ->fieldsTerminatedBy('|')
+        ->ignoreLines(11);
 }
 
 }

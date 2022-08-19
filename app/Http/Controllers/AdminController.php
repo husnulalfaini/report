@@ -33,8 +33,10 @@ class AdminController extends Controller
     $input = new User();
     $input['name']              = $request->name;
     $input['email']             = $request->email;
+    $input['telepon']           = $request->telepon;
+    $input['status']            = 0;
     $input['password']          = Hash::make($request->password);
-    $input['role']              = $request->role;
+    $input['role']              = "user";
     $input['remember_token']    = Str::random(60);
 
     // dd($input);
@@ -45,7 +47,7 @@ class AdminController extends Controller
 
     public function all_user(Type $var = null)
     {
-        $team = User::all();
+        $team = User::all()->where('status',1);
         return view('admin.all_user',compact('team'));
     }
 
@@ -74,6 +76,8 @@ class AdminController extends Controller
             // input data update user yang baru
             $admin->name            = $request->name;
             $admin->email           = $request->email;
+            $admin->telepon         = $request->telepon;
+            $admin->status          = 1;
             $admin->password        = Hash::make($request->password);
             $admin->remember_token  = Str::random(60);
             $admin->save();
@@ -85,6 +89,33 @@ class AdminController extends Controller
             
     }
 
+    public function konfirmasi()
+    {
+        $user = User::all()->where('status',0);
 
+        $empty ='-- Data Tidak Tersedia --';
+
+        return view('admin.permintaan_user', compact ('user','empty'));
+    }
+
+    
+    public function destroy($id)
+    {
+        // menghapus data petani mendaftar
+        $hapus =User::find($id);
+        $hapus->delete();
+
+        return redirect()->route('konfirmasi')->with('success','User berhasil dihapus');
+    }
+
+    public function terima($id)
+    {
+        // menerima data petani daftar
+        $terima= User::findOrFail($id);
+            $terima->status= 1;
+            $terima->update();
+
+        return redirect()->route('konfirmasi')->with('success','User berhasil dikonfirmasi');
+    }
 
 }

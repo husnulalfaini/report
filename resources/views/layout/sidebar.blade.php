@@ -35,6 +35,12 @@
                         <p> Pengguna </p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{url('/konfirmasi')}}" class="nav-link">
+                        <i class="nav-icon fas fa-user"></i>
+                        <p> Permintaan User </p>
+                    </a>
+                </li>
                 @else
                 <li class="nav-item   menu-is-opening menu-open">
                     <a class="nav-link">

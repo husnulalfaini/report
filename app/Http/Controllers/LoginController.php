@@ -21,6 +21,9 @@ class LoginController extends Controller
         // if(Auth::attempt($request->only('email','password')))
         if(Auth::attempt($request->only('email','password')))
         {
+            if (auth()->user()->status==0) {
+                return redirect('/')->with('error', 'Email Anda Belum Diverifikasi!!');
+            }
             if (auth()->user()->role=="user") {
                 return view('menu.upload');
             } else {
@@ -59,6 +62,8 @@ class LoginController extends Controller
     $input = new User();
     $input['name']              = $request->name;
     $input['email']             = $request->email;
+    $input['telepon']           = $request->telepon;
+    $input['status']            = 0;
     $input['password']          = Hash::make($request->password);
     $input['role']              = "user";
     $input['remember_token']    = Str::random(60);

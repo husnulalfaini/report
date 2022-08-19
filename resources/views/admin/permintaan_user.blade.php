@@ -8,41 +8,47 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-12">
-                <div class="card card-warning">
+                <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Unggah Laporan Physical Distributor Summary</h3>
+                        <h3 class="card-title">Pengguna Belum Terkonfirmasi</h3>
                     </div>
                     <!-- /.card-header -->
-                    <!-- form start -->
-                   
-                    <form action="{{route('import')}}" method="POST" enctype="multipart/form-data">
-                    {{csrf_field()}}
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="exampleInputFile">File input</label>
-                                <div class="input-group">
-                                    <div class="custom-file">
-                                        <input type="file" class="custom-file-input" id="exampleInputFile" name="file">
-                                        <label class="custom-file-label" for="exampleInputFile">Pilih file</label>
-                                    </div>
-                                    <div class="input-group-append">
-                                        <span class="input-group-text">Upload</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                                <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                            </div>
-                        </div>
-                        <!-- /.card-body -->
+                    <div class="card-body">
+                        <table id="example2" class="table table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <!-- <th>TANGGAL</th> -->
+                                    <th>NAMA</th>
+                                    <th>EMAIL</th>
+                                    <th>TELEPON</th>
+                                    <th>ACTON</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach ($user as $item)
+                                <tr>
 
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-warning">Submit</button>
-                        </div>
-                    </form>
+                                    <td>{{$item->name }}</td>
+                                    <td>{{$item->email}}</td>
+                                    <td>{{$item->telepon}}</td>
+                                    <td>
+                                        <span class="badge bg-success">
+                                            <a href="{{route('update.konfirmasi',[$item->id])}}"
+                                                class="text-dark"> Konfirmasi <i
+                                                    class="fas fa-arrow-circle-right"></i>
+                                            </a>
+                                        </span>
+                                        <span class="badge bg-danger">
+                                            <a href="{{route('konfirmasi.hapus',[$item->id])}}">Hapus</a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.card-body -->
                 </div>
-                <!-- /.card -->
                 <!-- /.card -->
             </div>
             <!-- /.col -->
@@ -51,6 +57,8 @@
         <!-- /.container-fluid -->
 </section>
 <!-- END Daftar Seluruh Kelompok -->
+
+
 
 
 <script src="{{asset('public/asset/plugins/jquery/jquery.min.js')}}"></script>
@@ -93,24 +101,13 @@ $('#example2').DataTable({
 
 	<script>
 	@if (Session::has('success')) {
-		swal({
-			title: "Berhasil!",
-			text: "{{Session::get('success')}}",
-			icon: "success",
-			button: "kembali"
-        
-		});
-    }
+		swal("Berhasil!", "User Telah Dikonfirmasi!", "success");
+	}
 	@endif
 	</script>
 	<script>
-	@if (Session::has('error')) {
-		swal({
-			title: "Gagal!",
-			text: "{{Session::get('error')}}",
-			icon: "error",
-			button: "kembali"
-		});
+	@if (Session::has('success')) {
+		swal("Berhasil!", "User Telah Dihapus!", "success");
 	}
 	@endif
 	</script>

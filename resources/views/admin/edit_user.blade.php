@@ -29,6 +29,11 @@
                                 placeholder="Masukan email">
                         </div>
                         <div class="form-group">
+                            <label for="exampleInputEmail1">Email</label>
+                            <input type="email" class="form-control" value="{{ $user->telepon }}" name="telepon" id="exampleInputEmail1"
+                                placeholder="Masukan telepon">
+                        </div>
+                        <div class="form-group">
                             <label for="exampleInputPassword1">Password</label>
                             <input type="password" class="form-control" name="password" value="{{ $user->password }}" id="exampleInputPassword1"
                                 placeholder="Password">

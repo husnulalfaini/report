@@ -42,6 +42,11 @@
                                 <div class="form-group mb-3">
                                     <label class="label" for="name">Email</label>
                                     <input type="email" class="form-control" name="email" placeholder="Username"
+                                        required>format email harus @ioh.co.id
+                                </div>
+                                <div class="form-group mb-3">
+                                    <label class="label" for="name">Telepon</label>
+                                    <input type="number" class="form-control" name="telepon" placeholder="No Telepon"
                                         required>
                                 </div>
                                 <div class="form-group mb-3">

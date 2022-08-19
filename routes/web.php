@@ -34,13 +34,19 @@ Route::post('/register_user', [LoginController::class, 'regis'])->name('register
 // Route::get('/', [DashboardController::class, 'index'])->name('index');
 Route::group(['middleware' => ['auth','CekRole:user']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/{item}', [DashboardController::class, 'detail_summary'])->name('detail.summary');
     Route::get('/sell_in', [SellInController::class, 'sell_in'])->name('sell_in');
     // Route::get('/getsell_in', [SellInController::class, 'getsell_in'])->name('getsell_in');
     Route::get('/sell_in/{item}', [SellInController::class, 'detail'])->name('detail.sell_in');
     Route::get('/sell_in/detail/{item}', [SellInController::class, 'detail_item'])->name('detail.item.sell_in');
     Route::get('/upload', [SellInController::class, 'upload'])->name('upload');
     Route::post('/uploadFile', [SellInController::class, 'uploadFile'])->name('upload.file');
+    Route::post('/uploadFilequeue', [SellInController::class, 'uploadFilequeue'])->name('upload.filequeue');
+    Route::post('/load', [SellInController::class, 'load'])->name('upload.load');
+    Route::post('/import', [SellInController::class, 'import'])->name('import');
     Route::get('/download', [SellInController::class, 'download'])->name('download.file');
+    Route::get('/download_month', [SellInController::class, 'download_month'])->name('download.month');
+    Route::get('/download_daily', [SellInController::class, 'download_daily'])->name('download.daily');
     Route::get('/profile', [ProfilUserController::class, 'profile'])->name('profile');
     Route::post('/profile/{item}', [ProfilUserController::class, 'profile_update'])->name('update.profile');
     Route::get('/filter', [DashboardController::class, 'filter'])->name('filter');
@@ -59,6 +65,10 @@ Route::group(['middleware' => ['auth','CekRole:admin']], function () {
     Route::get('/all_user', [AdminController::class, 'all_user'])->name('all.user');
     Route::get('/edit_user/{id}', [AdminController::class, 'edit_user'])->name('edit.user');
     Route::post('/update_user/{id}', [AdminController::class, 'update_user'])->name('update.user');
+    Route::get('/konfirmasi', [AdminController::class, 'konfirmasi'])->name('konfirmasi');
+    Route::get('/konfirmasi/{id}', [AdminController::class, 'terima'])->name('update.konfirmasi');
+    Route::get('/hapus/{item}', [AdminController::class, 'destroy'])->name('konfirmasi.hapus');
+  
 
 });
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

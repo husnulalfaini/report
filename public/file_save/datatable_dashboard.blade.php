@@ -357,3 +357,732 @@ $('#example').DataTable({
                     </tr>
                     @endforeach
 </tbody>
+
+
+
+<!-- if else dashboard -->
+if($request->select=="micro_cluster"){
+        
+        if($request->input ('datepicker') == null){
+            $tanggal  = Date("Y-m-d",strtotime('now'));
+        }
+        else {
+
+            $tanggal = '01-'.$request->datepicker;
+        }
+
+        $awalbulanini= date('Y-m-d',strtotime("first day of " . $tanggal));
+        $akhirbulanini= date('Y-m-d',strtotime("last day of " . $tanggal));
+        $bulankemarin= date('Y-m-d',strtotime($awalbulanini. " -1 month"));
+
+        // Menampilkan jumlah outlet pjp
+        $data= DB::table('sell_ins')
+        ->select('transaction_datetimes as tanggal','dest_micro_cluster as micro_cluster')
+        ->where('transaction_datetimes','>=', $awalbulanini)
+        ->where('transaction_datetimes','<=', $akhirbulanini)
+        ->whereIn('dest_saldomobo_id', function($query)
+        {
+            $query->select('id_outlet')
+            ->from('outletpjps')
+            ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+        })
+        ->GroupBy('dest_micro_cluster','transaction_datetimes')
+        ->get();
+        
+        // dd($data);
+
+        
+        $result= [];
+        foreach ($data as $key => $value) {
+            
+            $outlet_pjp= SellIn::where('transaction_datetimes',$value->tanggal)->where('dest_micro_cluster',$value->micro_cluster)->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $outlet_sp0k =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_micro_cluster',$value->micro_cluster)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+        
+            $outlet_sp0k =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_micro_cluster',$value->micro_cluster)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+
+            $outlet_sp3gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_micro_cluster',$value->micro_cluster)
+            ->where('produk_name', "SP DATA 3GB EJBN")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+
+            $outlet_sp9gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_micro_cluster',$value->micro_cluster)
+            ->where('produk_name', "SP DATA 9GB EJBN")
+            ->where('qty','>', 1)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $outlet_sp9gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_micro_cluster',$value->micro_cluster)
+            ->where('produk_name', "SP DATA 9GB EJBN")
+            ->where('qty','>', 1)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $spreg_today =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_micro_cluster',$value->micro_cluster)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('transaction_datetimes','>=', $awalbulanini)
+            ->sum('qty')
+            ;
+
+
+            $spori_today =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_micro_cluster',$value->micro_cluster)
+            ->where('transaction_datetimes','>=', $awalbulanini)
+            ->where(function($query)
+                {
+                    $query->where('produk_name', "SP DAT 16GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 8GB EJBN LTE") 
+                    ->orWhere('produk_name', "SP DATA 3GB EJBN") 
+                    ->orWhere('produk_name', "SP DAT 9GB EJBN");
+                })
+            ->sum('qty');
+
+
+            // $spreg_last =  SellIn::where('transaction_datetimes',$value->tanggal)
+            $spreg_last =  SellIn::where('dest_micro_cluster',$value->micro_cluster)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('transaction_datetimes','>=', $bulankemarin)
+            ->where('transaction_datetimes','<', $awalbulanini)
+            ->sum('qty');
+
+
+            // $spori_last =  SellIn::where('transaction_datetimes',$value->tanggal)
+            $spori_last =  SellIn::where('dest_micro_cluster',$value->micro_cluster)
+            ->where('transaction_datetimes','>=', $bulankemarin)
+            ->where('transaction_datetimes','<', $awalbulanini)
+            ->where(function($query)
+                {
+                    $query->where('produk_name', "SP DAT 16GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 8GB EJBN LTE") 
+                    ->orWhere('produk_name', "SP DATA 3GB EJBN") 
+                    ->orWhere('produk_name', "SP DAT 9GB EJBN");
+                })
+            ->sum('qty');
+            
+            $result[]=[
+                'tanggal'=>$value->tanggal,
+                'cluster'=>$value->cluster,
+                'outlet'=>$outlet_pjp,
+                'outlet_sp0k'=>$outlet_sp0k,
+                'ach_sp0k'=>$outlet_sp0k/$outlet_pjp,
+                'outlet_sp3gb'=>$outlet_sp3gb,
+                'ach_sp3gb'=>$outlet_sp3gb/$outlet_pjp,
+                'outlet_sp9gb'=>$outlet_sp9gb,
+                'ach_sp9gb'=>$outlet_sp9gb/$outlet_pjp,
+                'spori_today'=>$spori_today,
+                'spreg_today'=>$spreg_today,
+                'spori_last'=>$spori_last,
+                'spreg_last'=>$spreg_last,
+                'spori_growth'=>$spori_today==0||$spori_last==0?0:$spori_today/$spori_last-1,
+                'spreg_growth'=>$spreg_today==0||$spreg_last==0?0:$spreg_today/$spreg_last-1,
+        
+        ];
+    }
+
+        return view('menu.dashboard.micro_cluster');
+        // return view('menu.dashboard',compact('data', 'data_sp0k','data_sp3gb','data_sp9gb','data_spreg','data_spori'));
+        
+    } elseif ($request->select=="sales_area") {
+
+        if($request->input ('datepicker') == null){
+            $tanggal  = Date("Y-m-d",strtotime('now'));
+        }
+        else {
+
+            $tanggal = '01-'.$request->datepicker;
+        }
+
+        $awalbulanini= date('Y-m-d',strtotime("first day of " . $tanggal));
+        $akhirbulanini= date('Y-m-d',strtotime("last day of " . $tanggal));
+        $bulankemarin= date('Y-m-d',strtotime($awalbulanini. " -1 month"));
+                    // Menampilkan jumlah outlet pjp
+        $data= DB::table('sell_ins')
+        ->select('transaction_datetimes as tanggal','dest_sales_area as sales_area')
+        ->where('transaction_datetimes','>=', $awalbulanini)
+        ->where('transaction_datetimes','<=', $akhirbulanini)
+        ->whereIn('dest_saldomobo_id', function($query)
+        {
+            $query->select('id_outlet')
+            ->from('outletpjps')
+            ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+        })
+        ->GroupBy('dest_sales_area','transaction_datetimes')
+        ->get();
+        
+        // dd($data);
+
+        
+        $result= [];
+        foreach ($data as $key => $value) {
+            
+            $outlet_pjp= SellIn::where('transaction_datetimes',$value->tanggal)->where('dest_sales_area',$value->sales_area)->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $outlet_sp0k =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_sales_area',$value->sales_area)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+        
+            $outlet_sp0k =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_sales_area',$value->sales_area)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+
+            $outlet_sp3gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_sales_area',$value->sales_area)
+            ->where('produk_name', "SP DATA 3GB EJBN")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+
+            $outlet_sp9gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_sales_area',$value->sales_area)
+            ->where('produk_name', "SP DATA 9GB EJBN")
+            ->where('qty','>', 1)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $outlet_sp9gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_sales_area',$value->sales_area)
+            ->where('produk_name', "SP DATA 9GB EJBN")
+            ->where('qty','>', 1)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $spreg_today =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_sales_area',$value->sales_area)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('transaction_datetimes','>=', $awalbulanini)
+            ->sum('qty')
+            ;
+
+
+            $spori_today =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_sales_area',$value->sales_area)
+            ->where('transaction_datetimes','>=', $awalbulanini)
+            ->where(function($query)
+                {
+                    $query->where('produk_name', "SP DAT 16GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 8GB EJBN LTE") 
+                    ->orWhere('produk_name', "SP DATA 3GB EJBN") 
+                    ->orWhere('produk_name', "SP DAT 9GB EJBN");
+                })
+            ->sum('qty');
+
+
+            // $spreg_last =  SellIn::where('transaction_datetimes',$value->tanggal)
+            $spreg_last =  SellIn::where('dest_sales_area',$value->sales_area)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('transaction_datetimes','>=', $bulankemarin)
+            ->where('transaction_datetimes','<', $awalbulanini)
+            ->sum('qty');
+
+
+            // $spori_last =  SellIn::where('transaction_datetimes',$value->tanggal)
+            $spori_last =  SellIn::where('dest_sales_area',$value->sales_area)
+            ->where('transaction_datetimes','>=', $bulankemarin)
+            ->where('transaction_datetimes','<', $awalbulanini)
+            ->where(function($query)
+                {
+                    $query->where('produk_name', "SP DAT 16GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 8GB EJBN LTE") 
+                    ->orWhere('produk_name', "SP DATA 3GB EJBN") 
+                    ->orWhere('produk_name', "SP DAT 9GB EJBN");
+                })
+            ->sum('qty');
+            
+            $result[]=[
+                'tanggal'=>$value->tanggal,
+                'sales_area'=>$value->sales_area,
+                'outlet'=>$outlet_pjp,
+                'outlet_sp0k'=>$outlet_sp0k,
+                'ach_sp0k'=>$outlet_sp0k/$outlet_pjp,
+                'outlet_sp3gb'=>$outlet_sp3gb,
+                'ach_sp3gb'=>$outlet_sp3gb/$outlet_pjp,
+                'outlet_sp9gb'=>$outlet_sp9gb,
+                'ach_sp9gb'=>$outlet_sp9gb/$outlet_pjp,
+                'spori_today'=>$spori_today,
+                'spreg_today'=>$spreg_today,
+                'spori_last'=>$spori_last,
+                'spreg_last'=>$spreg_last,
+                'spori_growth'=>$spori_today==0||$spori_last==0?0:$spori_today/$spori_last-1,
+                'spreg_growth'=>$spreg_today==0||$spreg_last==0?0:$spreg_today/$spreg_last-1,
+        
+        ];
+        }
+        return view('menu.dashboard.area');
+    } elseif ($request->select=="area") {
+        if($request->input ('datepicker') == null){
+            $tanggal  = Date("Y-m-d",strtotime('now'));
+        }
+        else {
+
+            $tanggal = '01-'.$request->datepicker;
+        }
+
+        $awalbulanini= date('Y-m-d',strtotime("first day of " . $tanggal));
+        $akhirbulanini= date('Y-m-d',strtotime("last day of " . $tanggal));
+        $bulankemarin= date('Y-m-d',strtotime($awalbulanini. " -1 month"));
+        // Menampilkan jumlah outlet pjp
+        $data= DB::table('sell_ins')
+        ->select('transaction_datetimes as tanggal','dest_area as area')
+        ->where('transaction_datetimes','>=', $awalbulanini)
+        ->where('transaction_datetimes','<=', $akhirbulanini)
+        ->whereIn('dest_saldomobo_id', function($query)
+        {
+            $query->select('id_outlet')
+            ->from('outletpjps')
+            ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+        })
+        ->GroupBy('dest_area','transaction_datetimes')
+        ->get();
+        
+        // dd($data);
+
+        
+        $result= [];
+        foreach ($data as $key => $value) {
+            
+            $outlet_pjp= SellIn::where('transaction_datetimes',$value->tanggal)->where('dest_area',$value->area)->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $outlet_sp0k =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_area',$value->area)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+        
+            $outlet_sp0k =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_area',$value->area)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+
+            $outlet_sp3gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_area',$value->area)
+            ->where('produk_name', "SP DATA 3GB EJBN")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+
+            $outlet_sp9gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_area',$value->area)
+            ->where('produk_name', "SP DATA 9GB EJBN")
+            ->where('qty','>', 1)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $outlet_sp9gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_area',$value->area)
+            ->where('produk_name', "SP DATA 9GB EJBN")
+            ->where('qty','>', 1)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $spreg_today =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_area',$value->area)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('transaction_datetimes','>=', $awalbulanini)
+            ->sum('qty')
+            ;
+
+
+            $spori_today =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_area',$value->area)
+            ->where('transaction_datetimes','>=', $awalbulanini)
+            ->where(function($query)
+                {
+                    $query->where('produk_name', "SP DAT 16GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 8GB EJBN LTE") 
+                    ->orWhere('produk_name', "SP DATA 3GB EJBN") 
+                    ->orWhere('produk_name', "SP DAT 9GB EJBN");
+                })
+            ->sum('qty');
+
+
+            // $spreg_last =  SellIn::where('transaction_datetimes',$value->tanggal)
+            $spreg_last =  SellIn::where('dest_area',$value->area)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('transaction_datetimes','>=', $bulankemarin)
+            ->where('transaction_datetimes','<', $awalbulanini)
+            ->sum('qty');
+
+
+            // $spori_last =  SellIn::where('transaction_datetimes',$value->tanggal)
+            $spori_last =  SellIn::where('dest_area',$value->area)
+            ->where('transaction_datetimes','>=', $bulankemarin)
+            ->where('transaction_datetimes','<', $awalbulanini)
+            ->where(function($query)
+                {
+                    $query->where('produk_name', "SP DAT 16GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 8GB EJBN LTE") 
+                    ->orWhere('produk_name', "SP DATA 3GB EJBN") 
+                    ->orWhere('produk_name', "SP DAT 9GB EJBN");
+                })
+            ->sum('qty');
+            
+            $result[]=[
+                'tanggal'=>$value->tanggal,
+                'area'=>$value->area,
+                'outlet'=>$outlet_pjp,
+                'outlet_sp0k'=>$outlet_sp0k,
+                'ach_sp0k'=>$outlet_sp0k/$outlet_pjp,
+                'outlet_sp3gb'=>$outlet_sp3gb,
+                'ach_sp3gb'=>$outlet_sp3gb/$outlet_pjp,
+                'outlet_sp9gb'=>$outlet_sp9gb,
+                'ach_sp9gb'=>$outlet_sp9gb/$outlet_pjp,
+                'spori_today'=>$spori_today,
+                'spreg_today'=>$spreg_today,
+                'spori_last'=>$spori_last,
+                'spreg_last'=>$spreg_last,
+                'spori_growth'=>$spori_today==0||$spori_last==0?0:$spori_today/$spori_last-1,
+                'spreg_growth'=>$spreg_today==0||$spreg_last==0?0:$spreg_today/$spreg_last-1,
+        
+        ];
+    }
+        return view('menu.dashboard.area');
+    } elseif ($request->select=="cluster") {
+        if($request->input ('datepicker') == null){
+            $tanggal  = Date("Y-m-d",strtotime('now'));
+        }
+        else {
+
+            $tanggal = '01-'.$request->datepicker;
+        }
+
+        $awalbulanini= date('Y-m-d',strtotime("first day of " . $tanggal));
+        $akhirbulanini= date('Y-m-d',strtotime("last day of " . $tanggal));
+        $bulankemarin= date('Y-m-d',strtotime($awalbulanini. " -1 month"));
+        // Menampilkan jumlah outlet pjp
+        $data= DB::table('sell_ins')
+        ->select('transaction_datetimes as tanggal','dest_cluster as cluster')
+        ->where('transaction_datetimes','>=', $awalbulanini)
+        ->where('transaction_datetimes','<=', $akhirbulanini)
+        ->whereIn('dest_saldomobo_id', function($query)
+        {
+            $query->select('id_outlet')
+            ->from('outletpjps')
+            ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+        })
+        ->GroupBy('dest_cluster','transaction_datetimes')
+        ->get();
+        
+        // dd($data);
+
+        
+        $result= [];
+        foreach ($data as $key => $value) {
+            
+            $outlet_pjp= SellIn::where('transaction_datetimes',$value->tanggal)->where('dest_cluster',$value->cluster)->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $outlet_sp0k =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_cluster',$value->cluster)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+        
+            $outlet_sp0k =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_cluster',$value->cluster)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+
+            $outlet_sp3gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_cluster',$value->cluster)
+            ->where('produk_name', "SP DATA 3GB EJBN")
+            ->where('qty','>', 4)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+
+            $outlet_sp9gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_cluster',$value->cluster)
+            ->where('produk_name', "SP DATA 9GB EJBN")
+            ->where('qty','>', 1)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $outlet_sp9gb =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_cluster',$value->cluster)
+            ->where('produk_name', "SP DATA 9GB EJBN")
+            ->where('qty','>', 1)
+            ->whereIn('dest_saldomobo_id', function($query)
+            {
+                $query->select('id_outlet')
+                    ->from('outletpjps')
+                    ->whereRaw('outletpjps.id_outlet = sell_ins.dest_saldomobo_id');
+            })
+            ->get()
+            ->count();
+
+            $spreg_today =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_cluster',$value->cluster)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('transaction_datetimes','>=', $awalbulanini)
+            ->sum('qty')
+            ;
+
+
+            $spori_today =  SellIn::where('transaction_datetimes',$value->tanggal)
+            ->where('dest_cluster',$value->cluster)
+            ->where('transaction_datetimes','>=', $awalbulanini)
+            ->where(function($query)
+                {
+                    $query->where('produk_name', "SP DAT 16GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 8GB EJBN LTE") 
+                    ->orWhere('produk_name', "SP DATA 3GB EJBN") 
+                    ->orWhere('produk_name', "SP DAT 9GB EJBN");
+                })
+            ->sum('qty');
+
+
+            // $spreg_last =  SellIn::where('transaction_datetimes',$value->tanggal)
+            $spreg_last =  SellIn::where('dest_cluster',$value->cluster)
+            ->where('produk_name', "SP IM3 90D LTE (QN)")
+            ->where('transaction_datetimes','>=', $bulankemarin)
+            ->where('transaction_datetimes','<', $awalbulanini)
+            ->sum('qty');
+
+
+            // $spori_last =  SellIn::where('transaction_datetimes',$value->tanggal)
+            $spori_last =  SellIn::where('dest_cluster',$value->cluster)
+            ->where('transaction_datetimes','>=', $bulankemarin)
+            ->where('transaction_datetimes','<', $awalbulanini)
+            ->where(function($query)
+                {
+                    $query->where('produk_name', "SP DAT 16GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 2GB EJBN LTE")
+                    ->orWhere('produk_name',  "SP DAT 8GB EJBN LTE") 
+                    ->orWhere('produk_name', "SP DATA 3GB EJBN") 
+                    ->orWhere('produk_name', "SP DAT 9GB EJBN");
+                })
+            ->sum('qty');
+            
+            $result[]=[
+                'tanggal'=>$value->tanggal,
+                'cluster'=>$value->cluster,
+                'outlet'=>$outlet_pjp,
+                'outlet_sp0k'=>$outlet_sp0k,
+                'ach_sp0k'=>$outlet_sp0k/$outlet_pjp,
+                'outlet_sp3gb'=>$outlet_sp3gb,
+                'ach_sp3gb'=>$outlet_sp3gb/$outlet_pjp,
+                'outlet_sp9gb'=>$outlet_sp9gb,
+                'ach_sp9gb'=>$outlet_sp9gb/$outlet_pjp,
+                'spori_today'=>$spori_today,
+                'spreg_today'=>$spreg_today,
+                'spori_last'=>$spori_last,
+                'spreg_last'=>$spreg_last,
+                'spori_growth'=>$spori_today==0||$spori_last==0?0:$spori_today/$spori_last-1,
+                'spreg_growth'=>$spreg_today==0||$spreg_last==0?0:$spreg_today/$spreg_last-1,
+        
+        ];
+    }
+        return view('menu.dashboard.cluster');
+
+    } else {
+
+        @if(count($error)>0)
+                    <div class="alert alert-danger">
+                        Upload Validasi Error <br> <br>
+                        <ul>
+                            @foreach($error->all() as $error)
+                            <li>{{$error}}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                    @endif
+                    @if ($message = Session::get('success'))
+                    <div class="alert alert-success alert-block">
+                        <button type="button" class="close" data-dismiss="alert">x</button>
+                        <strong>{{$message}}</strong>
+                    </div>
+                    @endif

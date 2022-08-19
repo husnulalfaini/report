@@ -6,8 +6,9 @@ use App\Models\SellIn;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use DB;
+use Illuminate\Http\Request;
 
-class SellInExport implements FromCollection, WithHeadings
+class SellInExportDaily implements FromCollection, WithHeadings
 {
     public function headings(): array
     {
@@ -18,9 +19,12 @@ class SellInExport implements FromCollection, WithHeadings
     */
     public function collection()
     {
+      
+        $hari_ini= date('Y-m-d',strtotime("today"));
+
         return SellIn::select ('transaction_datetimes','dest_saldomobo_id', 'dest_micro_cluster','dest_cluster', 'produk_name', DB::raw('SUM(qty) as qty') )
         ->GroupBy ('transaction_datetimes','dest_saldomobo_id', 'dest_micro_cluster', 'dest_cluster', 'produk_name')
-        ->where('transaction_datetimes','2022-08-03')
+        ->where('created_at','>=', $hari_ini)
         ->get();
     }
 }
